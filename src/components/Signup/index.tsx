@@ -1,0 +1,11 @@
+import './main.scss';
+
+const Signup = () => {
+    return (
+        <div>
+            Sign up
+        </div>
+    );
+};
+
+export default Signup;

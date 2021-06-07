@@ -1,69 +1,45 @@
 import React, { useState } from 'react';
+import { iQuote, iCharacter, iWord, iQuoteProgress } from './interfaces'
 import './main.scss';
 
-interface iQuote {
-    text: string,
-    words: Array<iWord>,
-}
-
-interface iWord {
-    word: string,
-    characters: Array<iCharacter>
-}
-
-interface iCharacter {
-    character: string,
-    status: 'correct'|'incorrect'|'vibing'
-}
-
-interface iQuoteProgress {
-    characterPosition: number,
-    wordPosition: number,
-    writtenTotal: number,
-    writtenCorrect: number,
-    writtenIncorret: number,
-}
-
-const exampleText = 'Lorem ip/sum etc y al\'go mas.',
-      // splits and adds a space after each word
-      wordsArr :string[] = exampleText.split(' ').map((elem) => { return elem+' ' }),
-      iQuote :iQuote = {text: exampleText, words: [{word: 'unknown', characters: [{character:'unknown', status:'vibing'}]}]}
-
-// removes space added to the last word
-wordsArr[wordsArr.length-1] = wordsArr[wordsArr.length-1].trim()
+const text = 'Lorem ip/sum etc y al\'go mas.'
+const textWords :string[] = text.split(' ').map((elem) => { return elem+' ' }) // splits and add space after each word
+textWords[textWords.length-1] = textWords[textWords.length-1].trim() // removes space added to the last word
+const Quote :iQuote = {text: text, words: [{word: 'unknown', characters: [{character:'unknown', status:'vibing'}]}]}
 
 // createing example iQuote && iQuoteProgress
-wordsArr.forEach( (elem, index) => {
-    let characters = elem.split(''),
-        charactersArr :iCharacter[]= characters.map(x => {return {character: x, status: 'vibing'}}),
-        iWord :iWord =  {word: elem, characters: charactersArr}
+textWords.forEach( (word) => {
+    let characters = word.split(''),
+        Character :iCharacter[]= characters.map(x => {return {character: x, status: 'vibing'}}),
+        Word :iWord =  {word: word, characters: Character}
         
-    iQuote.words.push(iWord)
+    Quote.words.push(Word)
 })
-iQuote.words.shift() // deletes first example 'words' property
 
-const iQuoteProgress :iQuoteProgress = {characterPosition: 0, wordPosition: 0, writtenTotal: 0, writtenCorrect: 0, writtenIncorret: 0} 
+Quote.words.shift() // deletes 'unknown' words example
+
+const QuoteProgress :iQuoteProgress = {characterPosition: 0, wordPosition: 0, writtenTotal: 0, writtenCorrect: 0, writtenIncorret: 0} 
 
 // highlight_word_position(quote, inputText, quoteProgress)
 // highlight_character_position(quote, inputText, quoteProgress)
 
-console.log('iQuote', iQuote, 'iQuoteProgress', iQuoteProgress)
+console.log('Quote', Quote, 'QuoteProgress', QuoteProgress)
 
 const Main: React.FC = () => {
 
-    const [quote, setQuote] = useState<iQuote>(iQuote);
-    const [quoteProgress, setQuoteProgress] = useState<iQuoteProgress>(iQuoteProgress);
+    const [sQuote, setQuote] = useState<iQuote>(Quote);
+    const [sQuoteProgress, setQuoteProgress] = useState<iQuoteProgress>(QuoteProgress);
     
     const handleOnChange = (e: React.FormEvent<HTMLInputElement>) => {
         const inputElement :HTMLInputElement = e.currentTarget,
               inputText :string = inputElement.value,
-              words = quote.words
+              words = sQuote.words
 
-        // checkCharacter(quote, inputText, quoteProgress)
+        // checkCharacter({sQuote, inputText, inputElement, sQuoteProgress})
 
-        // highlight_word_position(quote, inputText, quoteProgress)
+        // highlight_word_position(sQuote, inputText, sQuoteProgress)
         
-        // highlight_character_position(quote, inputText, quoteProgress)
+        // highlight_character_position(sQuote, inputText, sQuoteProgress)
 
         
         // input correct & spacebar pressed, clear input
@@ -77,7 +53,13 @@ const Main: React.FC = () => {
     
     return (
         <div className="d-flex justify-content-center">
-            <label id="text">{quote?.text}</label>
+            <label id="text">
+                {
+                    sQuote.words.map((word) => {
+                        return (<span>{word.word}</span>)
+                    })
+                }
+            </label>
             <br />
             <input className="d-flex justify-content-center" onChange={handleOnChange} id="typeing-input" />
         </div>

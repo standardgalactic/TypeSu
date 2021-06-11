@@ -1,68 +1,89 @@
 import React, { useState } from 'react';
-import { iQuote, iCharacter, iWord, iQuoteProgress } from './interfaces'
+import { iQuote, iCharacter, iWord, iProgress } from './interfaces'
 import './main.scss';
 
-const text = 'Lorem ip/sum etc y al\'go mas.'
-const textWords :string[] = text.split(' ').map((elem) => { return elem+' ' }) // splits and add space after each word
-textWords[textWords.length-1] = textWords[textWords.length-1].trim() // removes space added to the last word
-const Quote :iQuote = {text: text, words: [{word: 'unknown', characters: [{character:'unknown', status:'vibing'}]}]}
-
-// createing example iQuote && iQuoteProgress
+const text = 'Lorem ip/sum etc y al\'go mas.',
+      textWords: string[] = split_add_spaces_except_last_word(text),
+      quoteDefault: iQuote = {text: text, words: [{word: 'unknown', status: 'vibing', characters: [{character:'unknown', status:'vibing'}]}]}
+      
 textWords.forEach( (word) => {
     let characters = word.split(''),
-        Character :iCharacter[]= characters.map(x => {return {character: x, status: 'vibing'}}),
-        Word :iWord =  {word: word, characters: Character}
+        Character: iCharacter[] = characters.map(x => {return {character: x, status: 'vibing'}}),
+        Word: iWord =  {word: word, status: 'vibing', characters: Character}
         
-    Quote.words.push(Word)
+    quoteDefault.words.push(Word)
 })
 
-Quote.words.shift() // deletes 'unknown' words example
+quoteDefault.words.shift() // deletes 'unknown' words example
 
-const QuoteProgress :iQuoteProgress = {characterPosition: 0, wordPosition: 0, writtenTotal: 0, writtenCorrect: 0, writtenIncorret: 0} 
-
-// highlight_word_position(quote, inputText, quoteProgress)
-// highlight_character_position(quote, inputText, quoteProgress)
-
-console.log('Quote', Quote, 'QuoteProgress', QuoteProgress)
+function split_add_spaces_except_last_word(text: string) {
+    let arr: string[]= text.split(' ').map((elem) => { return elem+' ' })
+    arr[arr.length-1] = arr[arr.length-1].trim() 
+    return arr
+}
 
 const Main: React.FC = () => {
 
-    const [sQuote, setQuote] = useState<iQuote>(Quote);
-    const [sQuoteProgress, setQuoteProgress] = useState<iQuoteProgress>(QuoteProgress);
+    const [quote, setQuote] = useState<iQuote>(quoteDefault);
+    const [wordPos, setWordPos] = useState<number>(0)
+    const [charPos, setCharPos] = useState<number>(0)
+    const [progress, setProgress] = useState<iProgress>({writtenTotal: 0, writtenCorrect: 0, writtenIncorrect: 0})
+    const [inputText, setInputText] = useState<string>('');
+
+    // const checkWord = () => {
+    //     return quote.words[wordPos].word === inputText ? true:false
+    // }
+
+    const checkCharacters = (actual_inputText) => {
+        actual_inputText.split('').forEach((character, i) => {
+            let quoteChar = quote.words[wordPos].characters[i].character
+            quote.words[wordPos].characters[i].status = quoteChar === character? 'correct' : 'incorrect'
+        })
+        setQuote(quote)
+    }
+    
     
     const handleOnChange = (e: React.FormEvent<HTMLInputElement>) => {
-        const inputElement :HTMLInputElement = e.currentTarget,
-              inputText :string = inputElement.value,
-              words = sQuote.words
+        let actual_inputText = e.currentTarget.value ? e.currentTarget.value:''
+        if (actual_inputText === '') {
+            setQuote(quoteDefault) // set to default
+        } else {           
+            checkCharacters(actual_inputText)
 
-        // checkCharacter({sQuote, inputText, inputElement, sQuoteProgress})
-
-        // highlight_word_position(sQuote, inputText, sQuoteProgress)
-        
-        // highlight_character_position(sQuote, inputText, sQuoteProgress)
-
-        
-        // input correct & spacebar pressed, clear input
-        if (words!=null && inputText.trim() === words[0].word.trim()) {
-            if (inputText.includes(' ')) {
-                inputElement.value = ''
-            }
+            if (actual_inputText.includes(' ')) {
+                setWordPos(wordPos+1)
+                setCharPos(0)
+                e.currentTarget.value = ''
+            } else setCharPos(charPos+1)
+            
+            
         }
-        
+        setInputText(actual_inputText)
+        console.log('wordPos: ',wordPos)
     }
     
     return (
+        <>
         <div className="d-flex justify-content-center">
             <label id="text">
                 {
-                    sQuote.words.map((word) => {
-                        return (<span>{word.word}</span>)
+                    quote.words.map((word) => {
+                        return (<span key={word.word} className={word.class?word.class:' '}>
+                            {
+                                word.characters.map( (char, i) => {
+                                    return ( <span key={char.character} className={char.class?char.class:' '}>{char.character}</span> )       
+                                } )
+                            }
+                        </span>) 
                     })
                 }
             </label>
             <br />
-            <input className="d-flex justify-content-center" onChange={handleOnChange} id="typeing-input" />
         </div>
+        <div className="d-flex justify-content-center">
+            <input onChange={handleOnChange} id="typeing-input" />
+        </div>
+        </>
     );
 };
 

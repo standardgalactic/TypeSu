@@ -5,20 +5,21 @@ interface iQuote {
 
 interface iWord {
     word: string,
+    class?: string,
+    status: 'correct'|'incorrect'|'vibing',
     characters: Array<iCharacter>
 }
 
 interface iCharacter {
     character: string,
+    class?: string,
     status: 'correct'|'incorrect'|'vibing'
 }
 
-interface iQuoteProgress {
-    characterPosition: number,
-    wordPosition: number,
+interface iProgress {
     writtenTotal: number,
     writtenCorrect: number,
-    writtenIncorret: number,
+    writtenIncorrect: number,
 }
 
-export type {iQuote, iWord, iCharacter, iQuoteProgress}
+export type {iQuote, iWord, iCharacter, iProgress}

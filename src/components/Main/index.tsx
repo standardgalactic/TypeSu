@@ -1,65 +1,79 @@
 import React, { useState } from 'react';
-import { iQuote, iCharacter, iWord, iProgress } from './interfaces'
+import { iQuote, iCharacter, iWord } from './interfaces'
 import './main.scss';
 
-const text = 'Lorem ip/sum etc y al\'go mas.',
-      textWords: string[] = split_add_spaces_except_last_word(text),
-      quoteDefault: iQuote = {text: text, words: [{word: 'unknown', status: 'vibing', characters: [{character:'unknown', status:'vibing'}]}]}
+const text = 'Lorem ip/sum etc y al\'go mas.'
+const textWords: string[]= text.split(' ').map((elem) => { return elem+' ' })
+textWords[textWords.length-1] = textWords[textWords.length-1].trim()
+const quoteDefault: iQuote = {text: text, words: [{word: 'unknown', status: 'vibing', characters: [{character:'unknown', status:'vibing'}]}]}
       
 textWords.forEach( (word) => {
-    let characters = word.split(''),
-        Character: iCharacter[] = characters.map(x => {return {character: x, status: 'vibing'}}),
-        Word: iWord =  {word: word, status: 'vibing', characters: Character}
+    let characters = word.split('')
+    let Character: iCharacter[] = characters.map(x => {return {character: x, status: 'vibing'}})
+    let Word: iWord =  {word: word, status: 'vibing', characters: Character}
         
     quoteDefault.words.push(Word)
 })
 
 quoteDefault.words.shift() // deletes 'unknown' words example
 
-function split_add_spaces_except_last_word(text: string) {
-    let arr: string[]= text.split(' ').map((elem) => { return elem+' ' })
-    arr[arr.length-1] = arr[arr.length-1].trim() 
-    return arr
-}
-
 const Main: React.FC = () => {
 
     const [quote, setQuote] = useState<iQuote>(quoteDefault);
     const [wordPos, setWordPos] = useState<number>(0)
     const [charPos, setCharPos] = useState<number>(0)
-    const [progress, setProgress] = useState<iProgress>({writtenTotal: 0, writtenCorrect: 0, writtenIncorrect: 0})
-    const [inputText, setInputText] = useState<string>('');
 
-    // const checkWord = () => {
-    //     return quote.words[wordPos].word === inputText ? true:false
-    // }
-
-    const checkCharacters = (actual_inputText) => {
-        actual_inputText.split('').forEach((character, i) => {
-            let quoteChar = quote.words[wordPos].characters[i].character
-            quote.words[wordPos].characters[i].status = quoteChar === character? 'correct' : 'incorrect'
-        })
-        setQuote(quote)
+    const checkWord = (inputText) => {
+        return quote.words[wordPos].word === inputText ? true:false
     }
-    
-    
-    const handleOnChange = (e: React.FormEvent<HTMLInputElement>) => {
-        let actual_inputText = e.currentTarget.value ? e.currentTarget.value:''
-        if (actual_inputText === '') {
-            setQuote(quoteDefault) // set to default
-        } else {           
-            checkCharacters(actual_inputText)
 
-            if (actual_inputText.includes(' ')) {
-                setWordPos(wordPos+1)
-                setCharPos(0)
-                e.currentTarget.value = ''
-            } else setCharPos(charPos+1)
-            
+    const checkInputCharacters = (inputText: string) => {
+        const resp = quote;
+        
+        // vibing unless correct or incorrect
+        resp.words[wordPos].status = 'vibing'
+        
+        // vibing all character on clear input
+        if (inputText==='') {
+            resp.words[wordPos].characters.forEach(char => {
+                char.status = 'vibing'
+            });
+        } else {
+            let inputChars: string[]= inputText.split('')
+            resp.words[wordPos].characters.forEach((character, i)=> {
+                if (inputChars[i]) {
+                    if (inputChars[i] === character.character) {
+                        character.status = 'correct'
+                    } else {
+                        character.status = 'incorrect'
+                        resp.words[wordPos].status = 'incorrect'
+                    }
+                } else {
+                    character.status = 'vibing'
+                }
+            });
             
         }
-        setInputText(actual_inputText)
-        console.log('wordPos: ',wordPos)
+        
+        return resp
+    }
+    
+    const handleOnClickDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        const key = e.key.split('').length > 1 ?'':e.key
+        const inputText: string = e.currentTarget.value+key
+       
+        const resp_quote = checkInputCharacters(inputText)
+        if (key.includes(' ')) {
+            resp_quote.words[wordPos].status = checkWord(inputText)? 'correct':'incorrect'
+            setWordPos(wordPos+1)
+            setCharPos(0)
+            e.currentTarget.value = ''
+            e.preventDefault()
+        } else setCharPos(charPos+1)
+
+        
+        setQuote(resp_quote)
+        console.log(resp_quote)
     }
     
     return (
@@ -81,7 +95,7 @@ const Main: React.FC = () => {
             <br />
         </div>
         <div className="d-flex justify-content-center">
-            <input onChange={handleOnChange} id="typeing-input" />
+            <input onKeyDown={(e) => handleOnClickDown(e)} id="typeing-input" />
         </div>
         </>
     );

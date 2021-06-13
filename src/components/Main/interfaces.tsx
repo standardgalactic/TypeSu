@@ -16,10 +16,4 @@ interface iCharacter {
     status: 'correct'|'incorrect'|'vibing'
 }
 
-interface iProgress {
-    writtenTotal: number,
-    writtenCorrect: number,
-    writtenIncorrect: number,
-}
-
-export type {iQuote, iWord, iCharacter, iProgress}
+export type {iQuote, iWord, iCharacter}

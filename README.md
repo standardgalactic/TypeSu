@@ -1,2 +1,2 @@
 # Typesu
-A Typeing app
+Just another Typing app maybe

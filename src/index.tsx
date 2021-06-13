@@ -1,11 +1,11 @@
 import './css/bootstrap.scss';
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Router from './routes/Router'
+import Main from './components/Main';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router />
+    <Main />
   </React.StrictMode>,
   document.getElementById('root')
 )

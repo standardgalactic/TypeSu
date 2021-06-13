@@ -27,13 +27,13 @@ const Main: React.FC = () => {
         return quote.words[wordPos].word === inputText ? true:false
     }
 
-    const checkInputCharacters = (inputText: string) => {
+    const check_inputText_in_wordPos = (inputText: string) => {
         const resp = quote;
         
-        // vibing unless correct or incorrect
+        // vibing word unless correct or incorrect
         resp.words[wordPos].status = 'vibing'
         
-        // vibing all character on clear input
+        // vibing word characters on clear input
         if (inputText==='') {
             resp.words[wordPos].characters.forEach(char => {
                 char.status = 'vibing'
@@ -62,7 +62,7 @@ const Main: React.FC = () => {
         const key = e.key.split('').length > 1 ?'':e.key
         const inputText: string = e.currentTarget.value+key
        
-        const resp_quote = checkInputCharacters(inputText)
+        const resp_quote = check_inputText_in_wordPos(inputText)
         if (key.includes(' ')) {
             resp_quote.words[wordPos].status = checkWord(inputText)? 'correct':'incorrect'
             setWordPos(wordPos+1)

@@ -10,10 +10,7 @@ import { iQuote } from "./interfaces";
 const check_inputText_in_wordPos = (inputText: string, quote: iQuote, wordPos) => {
     const resp = quote;
     
-    // vibing word unless correct or incorrect
-    resp.words[wordPos].status = 'vibing'
-    
-    // vibing word characters on clear input
+    // Default word to vibin in input clears
     if (inputText==='') {
         resp.words[wordPos].characters.forEach(char => {
             char.status = 'vibing'
@@ -35,9 +32,15 @@ const check_inputText_in_wordPos = (inputText: string, quote: iQuote, wordPos) =
             if (inputChars.length === resp.words[wordPos].characters.length) {
                 resp.words[wordPos].status = inputText === resp.words[wordPos].word ? 'correct' : 'incorrect'        
             }
+            
+            const quoteElement: HTMLSpanElement = (document.getElementById(resp.words[wordPos].word+i) as HTMLSpanElement)
+            if (quoteElement != null) {
+                quoteElement.classList.add(resp.words[wordPos].status)
+            }
+            console.log(resp.words[wordPos].word)
+            console.log(character)            
         })
     }
-    
     return resp
 }
 

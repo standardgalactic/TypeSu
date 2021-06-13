@@ -45,7 +45,6 @@ const Main: React.FC = () => {
         } else setCharPos(charPos+1)
 
         setQuote(resp_quote)
-        console.log(resp_quote)
     }
     
     return (
@@ -54,11 +53,11 @@ const Main: React.FC = () => {
             <label id="text">
                 {/* Text Prints character by character */}
                 {
-                    quote.words.map((word) => {
-                        return (<span key={word.word} className={word.class?word.class:' '}>
+                    quote.words.map((word, i) => {
+                        return (<span id={word.word+i} key={word.word}>
                             {
                                 word.characters.map( (char, i) => {
-                                    return ( <span key={char.character} className={char.class?char.class:' '}>{char.character}</span> )       
+                                    return ( <span id={char.character+i} key={char.character}>{char.character}</span> )       
                                 } )
                             }
                         </span>) 

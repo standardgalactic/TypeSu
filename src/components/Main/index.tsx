@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { checkWord, check_inputText_in_wordPos } from './checkings';
+import { check_inputText_in_wordPos } from './checkings';
 import { iQuote, iCharacter, iWord } from './interfaces'
 import './main.scss';
 
+/**
+ * Incoming text converts into an iQuote type
+ * Spaces between each Word added to help checking and printing the Text
+ */
 const text = 'Lorem ip/sum etc y al\'go mas.'
 const textWords: string[]= text.split(' ').map((elem) => { return elem+' ' })
 textWords[textWords.length-1] = textWords[textWords.length-1].trim()
@@ -34,14 +38,12 @@ const Main: React.FC = () => {
        
         const resp_quote = check_inputText_in_wordPos(inputText, quote, wordPos)
         if (key.includes(' ')) {
-            resp_quote.words[wordPos].status = checkWord(inputText, quote, wordPos)? 'correct':'incorrect'
             setWordPos(wordPos+1)
             setCharPos(0)
             e.currentTarget.value = ''
             e.preventDefault()
         } else setCharPos(charPos+1)
 
-        
         setQuote(resp_quote)
         console.log(resp_quote)
     }
@@ -50,6 +52,7 @@ const Main: React.FC = () => {
         <>
         <div className="d-flex justify-content-center">
             <label id="text">
+                {/* Text Prints character by character */}
                 {
                     quote.words.map((word) => {
                         return (<span key={word.word} className={word.class?word.class:' '}>

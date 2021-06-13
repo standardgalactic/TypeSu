@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { checkWord, check_inputText_in_wordPos } from './checkings';
 import { iQuote, iCharacter, iWord } from './interfaces'
 import './main.scss';
 
@@ -22,49 +23,18 @@ const Main: React.FC = () => {
     const [quote, setQuote] = useState<iQuote>(quoteDefault);
     const [wordPos, setWordPos] = useState<number>(0)
     const [charPos, setCharPos] = useState<number>(0)
-
-    const checkWord = (inputText) => {
-        return quote.words[wordPos].word === inputText ? true:false
-    }
-
-    const check_inputText_in_wordPos = (inputText: string) => {
-        const resp = quote;
-        
-        // vibing word unless correct or incorrect
-        resp.words[wordPos].status = 'vibing'
-        
-        // vibing word characters on clear input
-        if (inputText==='') {
-            resp.words[wordPos].characters.forEach(char => {
-                char.status = 'vibing'
-            });
-        } else {
-            let inputChars: string[]= inputText.split('')
-            resp.words[wordPos].characters.forEach((character, i)=> {
-                if (inputChars[i]) {
-                    if (inputChars[i] === character.character) {
-                        character.status = 'correct'
-                    } else {
-                        character.status = 'incorrect'
-                        resp.words[wordPos].status = 'incorrect'
-                    }
-                } else {
-                    character.status = 'vibing'
-                }
-            });
-            
-        }
-        
-        return resp
-    }
     
+    /**
+     * Checks individual characters and words status
+     * @param e input event
+     */
     const handleOnClickDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const key = e.key.split('').length > 1 ?'':e.key
         const inputText: string = e.currentTarget.value+key
        
-        const resp_quote = check_inputText_in_wordPos(inputText)
+        const resp_quote = check_inputText_in_wordPos(inputText, quote, wordPos)
         if (key.includes(' ')) {
-            resp_quote.words[wordPos].status = checkWord(inputText)? 'correct':'incorrect'
+            resp_quote.words[wordPos].status = checkWord(inputText, quote, wordPos)? 'correct':'incorrect'
             setWordPos(wordPos+1)
             setCharPos(0)
             e.currentTarget.value = ''

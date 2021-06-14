@@ -1,4 +1,4 @@
-import { iQuote } from "./interfaces";
+import { iQuote, iWord } from "./interfaces";
 
 /**
  * Modifies Word & Character statuses and calls highlighting styles functions accordingly
@@ -33,15 +33,15 @@ const check_inputText_in_wordPos = (inputText: string, quote: iQuote, wordPos) =
                 resp.words[wordPos].status = inputText === resp.words[wordPos].word ? 'correct' : 'incorrect'        
             }
             
-            const quoteElement: HTMLSpanElement = (document.getElementById(resp.words[wordPos].word+i) as HTMLSpanElement)
+            const quoteElement: HTMLSpanElement = (document.getElementById(wordPos+resp.words[wordPos].characters[i].character+i) as HTMLSpanElement)
             if (quoteElement != null) {
-                quoteElement.classList.add(resp.words[wordPos].status)
+                quoteElement.className = ''
+                quoteElement.className = resp.words[wordPos].characters[i].status
+                // quoteElement.classList.add(resp.words[wordPos].status)
             }
-            console.log(resp.words[wordPos].word)
-            console.log(character)            
         })
     }
     return resp
 }
 
-export { check_inputText_in_wordPos} 
+export { check_inputText_in_wordPos } 

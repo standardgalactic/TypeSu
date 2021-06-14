@@ -33,6 +33,27 @@ const Main: React.FC = () => {
      * @param e input event
      */
     const handleOnClickDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        // lil restart thing real fast to show the app
+        if (e.key === 'Enter') {
+            console.log(e.key)
+            quote.words.forEach((word, word_i) => {
+                word.characters.forEach((character, char_i)=> {
+                    const quoteElement: HTMLSpanElement = (document.getElementById(word_i+quote.words[word_i].characters[char_i].character+char_i) as HTMLSpanElement)
+                    if (quoteElement != null) {
+                        quoteElement.className = ''
+                    }
+                })                
+            });
+            
+            setQuote(quoteDefault)
+            setWordPos(0)
+            setCharPos(0)
+            e.currentTarget.value = ''
+            e.preventDefault()
+            
+            return false
+        }
+        
         const key = e.key.split('').length > 1 ?'':e.key
         const inputText: string = e.currentTarget.value+key
        
@@ -53,11 +74,11 @@ const Main: React.FC = () => {
             <label id="text">
                 {/* Text Prints character by character */}
                 {
-                    quote.words.map((word, i) => {
-                        return (<span id={word.word+i} key={word.word}>
+                    quote.words.map((word, index) => {
+                        return (<span id={word.word+index} key={word.word}>
                             {
                                 word.characters.map( (char, i) => {
-                                    return ( <span id={char.character+i} key={char.character}>{char.character}</span> )       
+                                    return ( <span id={index+char.character+i} key={char.character}>{char.character}</span> )       
                                 } )
                             }
                         </span>) 
@@ -68,6 +89,9 @@ const Main: React.FC = () => {
         </div>
         <div className="d-flex justify-content-center">
             <input onKeyDown={(e) => handleOnClickDown(e)} id="typeing-input" />
+        </div>
+        <div className="d-flex justify-content-center">
+            <span>Enter to restart</span>
         </div>
         </>
     );

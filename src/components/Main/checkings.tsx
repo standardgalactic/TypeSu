@@ -1,4 +1,4 @@
-import { iQuote, iWord } from "./interfaces";
+import { iQuote } from "./interfaces";
 
 /**
  * Modifies Word & Character statuses and calls highlighting styles functions accordingly

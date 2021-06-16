@@ -69,31 +69,33 @@ const Main: React.FC = () => {
     }
     
     return (
-        <>
-        <div className="d-flex justify-content-center">
-            <label id="text">
-                {/* Text Prints character by character */}
-                {
-                    quote.words.map((word, index) => {
-                        return (<span id={word.word+index} key={word.word}>
-                            {
-                                word.characters.map( (char, i) => {
-                                    return ( <span id={index+char.character+i} key={char.character}>{char.character}</span> )       
-                                } )
+        <div className="App">
+            <header className="App-header">
+                <div className="parent">
+                    <div className="div1">TypeSu</div>
+                    <div className="div2"> </div>
+                    <div className="div3"> </div>
+                    <div className="div4"> 
+                        <label id="text">
+                            {   /* Text Prints word by word */ 
+                                quote.words.map((word, index) => {
+                                    return (<span id={word.word+index} key={word.word}>
+                                        {   /* And character by character*/
+                                            word.characters.map( (char, i) => {
+                                                return ( <span id={index+char.character+i} key={char.character}>{char.character}</span> )       
+                                            } )
+                                        }
+                                    </span>) 
+                                })
                             }
-                        </span>) 
-                    })
-                }
-            </label>
-            <br />
+                        </label>
+                    </div>
+                    <div className="div5"> 
+                        <input onKeyDown={(e) => handleOnClickDown(e)} id="typeing-input" />
+                    </div>
+                </div>                
+            </header>
         </div>
-        <div className="d-flex justify-content-center">
-            <input onKeyDown={(e) => handleOnClickDown(e)} id="typeing-input" />
-        </div>
-        <div className="d-flex justify-content-center">
-            <span>Enter to restart</span>
-        </div>
-        </>
     );
 };
 

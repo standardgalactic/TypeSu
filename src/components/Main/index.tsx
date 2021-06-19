@@ -69,13 +69,11 @@ const Main: React.FC = () => {
     }
     
     return (
-        <div className="App">
-            <header className="App-header">
-                <div className="parent">
-                    <div className="div1">TypeSu</div>
-                    <div className="div2"> </div>
-                    <div className="div3"> </div>
-                    <div className="div4"> 
+        <div className='flex-container'>
+            <div className='center-container'>
+                <div className='main-title'>TypeSu</div>
+                <div className='text-and-input'>
+                    <div>
                         <label id="text">
                             {   /* Text Prints word by word */ 
                                 quote.words.map((word, index) => {
@@ -90,11 +88,11 @@ const Main: React.FC = () => {
                             }
                         </label>
                     </div>
-                    <div className="div5"> 
+                    <div>
                         <input onKeyDown={(e) => handleOnClickDown(e)} id="typeing-input" />
                     </div>
-                </div>                
-            </header>
+                </div>
+            </div>
         </div>
     );
 };

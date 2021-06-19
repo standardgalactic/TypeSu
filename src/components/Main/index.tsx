@@ -70,12 +70,15 @@ const Main: React.FC = () => {
     
     return (
         <div className='flex-container'>
-            <div className='center-container'>
+            <div className='left-column'>
+                <div>[compartir icon]</div>
+            </div>
+            <div className='center-column'>
                 <div className='main-title'>TypeSu</div>
-                <div className='text-and-input'>
-                    <div>
-                        <label id="text">
-                            {   /* Text Prints word by word */ 
+                <div className='quote-and-input'>
+                    <div id="quote-container">
+                        <div id="quote">
+                            {   /* quote Prints word by word */ 
                                 quote.words.map((word, index) => {
                                     return (<span id={word.word+index} key={word.word}>
                                         {   /* And character by character*/
@@ -86,11 +89,17 @@ const Main: React.FC = () => {
                                     </span>) 
                                 })
                             }
-                        </label>
+                        </div>
                     </div>
-                    <div>
-                        <input onKeyDown={(e) => handleOnClickDown(e)} id="typeing-input" />
+                    <div id="input-container">
+                        <input onKeyDown={(e) => handleOnClickDown(e)} />
                     </div>
+                </div>
+            </div>
+            <div className='right-column'>
+                <div className='icons-container'>
+                    <div>[NM]</div>
+                    <div>[S IN/S UP]</div>
                 </div>
             </div>
         </div>

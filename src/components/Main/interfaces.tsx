@@ -16,4 +16,23 @@ interface iCharacter {
     status: 'correct'|'incorrect'|'vibing'
 }
 
-export type {iReply, iWord, iCharacter}
+interface iUser {
+    id: string,
+    name: string,
+    history: iHistory[]
+}
+
+interface iHistory {
+    reply_id: string, 
+    result: iResult[]
+}
+
+interface iResult {
+    words_failed: number,
+    chars_failed: number,
+    max_words_combo: number,
+    max_chars_combo: number,
+    total_score: number
+}
+
+export type {iReply, iWord, iCharacter, iUser}

@@ -1,30 +1,30 @@
 import React, { useState } from 'react';
 import { check_inputText_in_wordPos } from './checkings';
-import { iQuote, iCharacter, iWord } from './interfaces'
+import { iReply, iCharacter, iWord } from './interfaces'
 import './main.scss';
 
 /**
- * Incoming text converts into an iQuote type
+ * Incoming text converts into an iReply type
  * Spaces between each Word added to help checking and printing the Text
  */
 const text = 'Lorem ip/sum etc y al\'go mas.'
 const textWords: string[]= text.split(' ').map((elem) => { return elem+' ' })
 textWords[textWords.length-1] = textWords[textWords.length-1].trim()
-const quoteDefault: iQuote = {text: text, words: [{word: 'unknown', status: 'vibing', characters: [{character:'unknown', status:'vibing'}]}]}
+const replyDefault: iReply = {text: text, words: [{word: 'unknown', status: 'vibing', characters: [{character:'unknown', status:'vibing'}]}]}
       
 textWords.forEach( (word) => {
     let characters = word.split('')
     let Character: iCharacter[] = characters.map(x => {return {character: x, status: 'vibing'}})
     let Word: iWord =  {word: word, status: 'vibing', characters: Character}
         
-    quoteDefault.words.push(Word)
+    replyDefault.words.push(Word)
 })
 
-quoteDefault.words.shift() // deletes 'unknown' words example
+replyDefault.words.shift() // deletes 'unknown' words example
 
 const Main: React.FC = () => {
 
-    const [quote, setQuote] = useState<iQuote>(quoteDefault);
+    const [reply, setReply] = useState<iReply>(replyDefault);
     const [wordPos, setWordPos] = useState<number>(0)
     const [charPos, setCharPos] = useState<number>(0)
     
@@ -36,16 +36,16 @@ const Main: React.FC = () => {
         // lil restart thing real fast to show the app
         if (e.key === 'Enter') {
             console.log(e.key)
-            quote.words.forEach((word, word_i) => {
+            reply.words.forEach((word, word_i) => {
                 word.characters.forEach((character, char_i)=> {
-                    const quoteElement: HTMLSpanElement = (document.getElementById(word_i+quote.words[word_i].characters[char_i].character+char_i) as HTMLSpanElement)
-                    if (quoteElement != null) {
-                        quoteElement.className = ''
+                    const replyElement: HTMLSpanElement = (document.getElementById(word_i+reply.words[word_i].characters[char_i].character+char_i) as HTMLSpanElement)
+                    if (replyElement != null) {
+                        replyElement.className = ''
                     }
                 })                
             });
             
-            setQuote(quoteDefault)
+            setReply(replyDefault)
             setWordPos(0)
             setCharPos(0)
             e.currentTarget.value = ''
@@ -57,7 +57,7 @@ const Main: React.FC = () => {
         const key = e.key.split('').length > 1 ?'':e.key
         const inputText: string = e.currentTarget.value+key
        
-        const resp_quote = check_inputText_in_wordPos(inputText, quote, wordPos)
+        const resp_reply = check_inputText_in_wordPos(inputText, reply, wordPos)
         if (key.includes(' ')) {
             setWordPos(wordPos+1)
             setCharPos(0)
@@ -65,7 +65,7 @@ const Main: React.FC = () => {
             e.preventDefault()
         } else setCharPos(charPos+1)
 
-        setQuote(resp_quote)
+        setReply(resp_reply)
     }
     
     return (
@@ -75,11 +75,11 @@ const Main: React.FC = () => {
             </div>
             <div className='center-column'>
                 <div className='main-title'>TypeSu</div>
-                <div className='quote-and-input'>
-                    <div id="quote-container">
-                        <div id="quote">
-                            {   /* quote Prints word by word */ 
-                                quote.words.map((word, index) => {
+                <div className='reply-and-input'>
+                    <div id="reply-container">
+                        <div id="reply">
+                            {   /* reply Prints word by word */ 
+                                reply.words.map((word, index) => {
                                     return (<span id={word.word+index} key={word.word}>
                                         {   /* And character by character*/
                                             word.characters.map( (char, i) => {

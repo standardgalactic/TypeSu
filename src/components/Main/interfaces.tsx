@@ -1,4 +1,4 @@
-interface iQuote {
+interface iReply {
     text: string,
     words: Array<iWord>,
 }
@@ -16,4 +16,4 @@ interface iCharacter {
     status: 'correct'|'incorrect'|'vibing'
 }
 
-export type {iQuote, iWord, iCharacter}
+export type {iReply, iWord, iCharacter}

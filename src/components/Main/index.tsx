@@ -57,7 +57,7 @@ const Main: React.FC = () => {
         const key = e.key.split('').length > 1 ?'':e.key
         const inputText: string = e.currentTarget.value+key
        
-        const resp_reply = check_inputText_in_wordPos(inputText, reply, wordPos)
+        const checked_reply = check_inputText_in_wordPos(inputText, reply, wordPos)
         if (key.includes(' ')) {
             setWordPos(wordPos+1)
             setCharPos(0)
@@ -65,7 +65,7 @@ const Main: React.FC = () => {
             e.preventDefault()
         } else setCharPos(charPos+1)
 
-        setReply(resp_reply)
+        setReply(checked_reply)
     }
     
     return (
@@ -80,10 +80,10 @@ const Main: React.FC = () => {
                         <div id="reply">
                             {   /* reply Prints word by word */ 
                                 reply.words.map((word, index) => {
-                                    return (<span id={word.word+index} key={word.word}>
+                                    return (<span id={word.word+index} key={word.word+index}>
                                         {   /* And character by character*/
                                             word.characters.map( (char, i) => {
-                                                return ( <span id={index+char.character+i} key={char.character}>{char.character}</span> )       
+                                                return ( <span id={index+char.character+i} key={index+char.character+i}>{char.character}</span> )       
                                             } )
                                         }
                                     </span>) 

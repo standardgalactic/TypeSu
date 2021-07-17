@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { People, Login, AddUser, Show } from 'react-iconly'
 import { check_inputText_in_wordPos } from './checkings';
 import { iReply, iCharacter, iWord } from './interfaces'
 import './main.scss';
@@ -71,7 +72,9 @@ const Main: React.FC = () => {
     return (
         <div className='flex-container'>
             <div className='left-column'>
-                <div>[compartir icon]</div>
+                <div>
+                    <People set="bold" />
+                </div>
             </div>
             <div className='center-column'>
                 <div className='main-title'>TypeSu</div>
@@ -98,8 +101,9 @@ const Main: React.FC = () => {
             </div>
             <div className='right-column'>
                 <div className='icons-container'>
-                    <div>[NM]</div>
-                    <div>[S IN/S UP]</div>
+                        <Show set="light" />
+                        <AddUser set="bold" />
+                        <Login set="bold" />
                 </div>
             </div>
         </div>

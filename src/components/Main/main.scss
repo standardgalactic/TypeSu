@@ -75,10 +75,16 @@
         .icons-container {
             position: relative;
             top: 10vh;
-
-            div {
-                display: inline-block;
+            
+            svg {
+                margin: 0 5px;
             }
         }
     }
+}
+
+svg {
+    display: inline-block;
+    height: 35px;
+    width: 35px;
 }

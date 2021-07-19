@@ -17,6 +17,9 @@ const check_inputText_in_wordPos = (inputText: string, quote: iQuote, wordPos) =
         });
     } else {
         let inputChars: string[]= inputText.split('')
+        if (!resp.words[wordPos]) {
+            return resp
+        }
         resp.words[wordPos].characters.forEach((character, i)=> {
             if (inputChars[i]) {
                 if (inputChars[i] === character.character) {

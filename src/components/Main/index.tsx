@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { People, Login, AddUser, Show } from 'react-iconly'
+import { People, User, Show } from 'react-iconly'
 import { check_inputText_in_wordPos } from './checkings';
 import { iReply, iCharacter, iWord } from './interfaces'
 import './main.scss';
@@ -97,13 +97,13 @@ const Main: React.FC = () => {
                     <div id="input-container">
                         <input onKeyDown={(e) => handleOnClickDown(e)} />
                     </div>
+                    <p>Words Per Minute: {Math.floor(60/wordPos)}</p>
                 </div>
             </div>
             <div className='right-column'>
                 <div className='icons-container'>
                         <Show set="light" />
-                        <AddUser set="bold" />
-                        <Login set="bold" />
+                        <User set="bold" />
                 </div>
             </div>
         </div>

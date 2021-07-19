@@ -15,9 +15,9 @@ class QuoteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'uploaded_by_user_id' => 'required',
-            'season' => 'required',
-            'episode' => 'required',
+            'user_id' => 'required',
+            'source_id' => 'required',
+            'reference_in_source' => 'required',
         ]);
         
         return Quote::create($request->all());
@@ -28,8 +28,8 @@ class QuoteController extends Controller
         return Quote::find($id);
     }
 
-    public function search($uploaded_by_user_id) {
-        return Quote::where('uploaded_by_user_id', $uploaded_by_user_id);
+    public function search($user_id) {
+        return Quote::where('user_id', $user_id);
     }
 
     public function update(Request $request, $id)

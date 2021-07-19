@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Quote extends Model
+class Character extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'full_name',
         'source_id',
-        'reference_in_source',
     ];
 }

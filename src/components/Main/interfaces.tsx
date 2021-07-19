@@ -1,4 +1,4 @@
-interface iReply {
+interface iQuote {
     text: string,
     words: Array<iWord>,
 }
@@ -23,7 +23,7 @@ interface iUser {
 }
 
 interface iHistory {
-    reply_id: string, 
+    quote_id: string, 
     result: iResult[]
 }
 
@@ -35,4 +35,4 @@ interface iResult {
     total_score: number
 }
 
-export type {iReply, iWord, iCharacter, iUser}
+export type {iQuote, iWord, iCharacter, iUser}

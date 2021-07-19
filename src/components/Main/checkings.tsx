@@ -1,14 +1,14 @@
-import { iReply } from "./interfaces";
+import { iQuote } from "./interfaces";
 
 /**
  * Modifies Word & Character statuses and calls highlighting styles functions accordingly
  * @param inputText Actual text in the input
- * @param reply Word & Characters in the reply you're typing
- * @param wordPos Where in 'reply' you're positioned
- * @returns Updated 'reply' obj with different statuses
+ * @param quote Word & Characters in the quote you're typing
+ * @param wordPos Where in 'quote' you're positioned
+ * @returns Updated 'quote' obj with different statuses
  */
-const check_inputText_in_wordPos = (inputText: string, reply: iReply, wordPos) => {
-    const resp = reply;
+const check_inputText_in_wordPos = (inputText: string, quote: iQuote, wordPos) => {
+    const resp = quote;
     
     // Default word to vibin in input clears
     if (inputText==='') {
@@ -34,9 +34,9 @@ const check_inputText_in_wordPos = (inputText: string, reply: iReply, wordPos) =
                 resp.words[wordPos].status = inputText === resp.words[wordPos].word ? 'correct' : 'incorrect'        
             }
             
-            const replyElement: HTMLSpanElement = (document.getElementById(wordPos+resp.words[wordPos].characters[i].character+i) as HTMLSpanElement)
-            if (replyElement != null) {
-                replyElement.className = resp.words[wordPos].characters[i].status
+            const quoteElement: HTMLSpanElement = (document.getElementById(wordPos+resp.words[wordPos].characters[i].character+i) as HTMLSpanElement)
+            if (quoteElement != null) {
+                quoteElement.className = resp.words[wordPos].characters[i].status
             }
         })
     }

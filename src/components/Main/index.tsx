@@ -1,52 +1,57 @@
 import React, { useState } from 'react';
 import { People, User, Show } from 'react-iconly'
 import { check_inputText_in_wordPos } from './checkings';
-import { iReply, iCharacter, iWord } from './interfaces'
+import { iQuote, iCharacter, iWord } from './interfaces'
 import './main.scss';
 
 /**
- * Incoming text converts into an iReply type
- * Spaces between each Word added to help checking and printing the Text
+ * Incoming text converts into an iQuote type
+ * Spaces between each Word are added to help checking and printing the Text
  */
 const text = 'Lorem ip/sum etc y al\'go mas.'
 const textWords: string[]= text.split(' ').map((elem) => { return elem+' ' })
 textWords[textWords.length-1] = textWords[textWords.length-1].trim()
-const replyDefault: iReply = {text: text, words: [{word: 'unknown', status: 'vibing', characters: [{character:'unknown', status:'vibing'}]}]}
+
+// Each word, character and text has its own type definition to populate with default values prior to being used
+const quoteDefault: iQuote = {text: text, words: [{word: 'unknown', status: 'vibing', characters: [{character:'unknown', status:'vibing'}]}]}
       
 textWords.forEach( (word) => {
     let characters = word.split('')
     let Character: iCharacter[] = characters.map(x => {return {character: x, status: 'vibing'}})
     let Word: iWord =  {word: word, status: 'vibing', characters: Character}
         
-    replyDefault.words.push(Word)
+    quoteDefault.words.push(Word)
 })
 
-replyDefault.words.shift() // deletes 'unknown' words example
+quoteDefault.words.shift() // deletes 'unknown' words example
 
 const Main: React.FC = () => {
-
-    const [reply, setReply] = useState<iReply>(replyDefault);
+    const [quote, setQuote] = useState<iQuote>(quoteDefault);
     const [wordPos, setWordPos] = useState<number>(0)
     const [charPos, setCharPos] = useState<number>(0)
     
     /**
      * Checks individual characters and words status
+     * Calls functions to modify styling
+     * Changes Word position and Character position on input
+     * Changes quote status on 'Enter' press
      * @param e input event
      */
-    const handleOnClickDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        // lil restart thing real fast to show the app
+    const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        // lil restart thing
         if (e.key === 'Enter') {
             console.log(e.key)
-            reply.words.forEach((word, word_i) => {
+            // Resets styling (red/green/blue backgrounds on characters)
+            quote.words.forEach((word, word_i) => {
                 word.characters.forEach((character, char_i)=> {
-                    const replyElement: HTMLSpanElement = (document.getElementById(word_i+reply.words[word_i].characters[char_i].character+char_i) as HTMLSpanElement)
-                    if (replyElement != null) {
-                        replyElement.className = ''
+                    const quoteElement: HTMLSpanElement = (document.getElementById(word_i+quote.words[word_i].characters[char_i].character+char_i) as HTMLSpanElement)
+                    if (quoteElement != null) {
+                        quoteElement.className = ''
                     }
                 })                
             });
             
-            setReply(replyDefault)
+            setQuote(quoteDefault)
             setWordPos(0)
             setCharPos(0)
             e.currentTarget.value = ''
@@ -55,10 +60,12 @@ const Main: React.FC = () => {
             return false
         }
         
+        // Checks if input is not Shift, Ctrl, or any other input appart of a letter/number/simbol
         const key = e.key.split('').length > 1 ?'':e.key
         const inputText: string = e.currentTarget.value+key
+        const checked_quote = check_inputText_in_wordPos(inputText, quote, wordPos)
        
-        const checked_reply = check_inputText_in_wordPos(inputText, reply, wordPos)
+        // A space means a new word being typed
         if (key.includes(' ')) {
             setWordPos(wordPos+1)
             setCharPos(0)
@@ -66,7 +73,7 @@ const Main: React.FC = () => {
             e.preventDefault()
         } else setCharPos(charPos+1)
 
-        setReply(checked_reply)
+        setQuote(checked_quote)
     }
     
     return (
@@ -78,11 +85,11 @@ const Main: React.FC = () => {
             </div>
             <div className='center-column'>
                 <div className='main-title'>TypeSu</div>
-                <div className='reply-and-input'>
-                    <div id="reply-container">
-                        <div id="reply">
-                            {   /* reply Prints word by word */ 
-                                reply.words.map((word, index) => {
+                <div className='quote-and-input'>
+                    <div id="quote-container">
+                        <div id="quote">
+                            {   /* quote Prints word by word */ 
+                                quote.words.map((word, index) => {
                                     return (<span id={word.word+index} key={word.word+index}>
                                         {   /* And character by character*/
                                             word.characters.map( (char, i) => {
@@ -95,7 +102,7 @@ const Main: React.FC = () => {
                         </div>
                     </div>
                     <div id="input-container">
-                        <input onKeyDown={(e) => handleOnClickDown(e)} />
+                        <input onKeyDown={(e) => handleOnKeyDown(e)} />
                     </div>
                     <p>Words Per Minute: {Math.floor(60/wordPos)}</p>
                 </div>

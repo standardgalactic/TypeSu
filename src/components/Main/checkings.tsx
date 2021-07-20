@@ -12,6 +12,9 @@ const check_inputText_in_wordPos = (inputText: string, quote: iQuote, wordPos) =
     
     // Default word to vibin in input clears
     if (inputText==='') {
+        if (!resp.words[wordPos]) {
+            return resp
+        }
         resp.words[wordPos].characters.forEach(char => {
             char.status = 'vibing'
         });

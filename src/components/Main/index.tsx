@@ -29,7 +29,17 @@ const Main: React.FC = () => {
     const [quote, setQuote] = useState<iQuote>(quoteDefault);
     const [wordPos, setWordPos] = useState<number>(0)
     const [charPos, setCharPos] = useState<number>(0)
-    
+    const [startTime, setStartTime] = useState<number>(new Date().getTime())
+    const [wpm, setWpm] = useState<number>(0)
+
+    const checkWpm = (): number => {
+        let endTime = new Date().getTime();
+        let timeDiff = (endTime - startTime)/1000
+        console.log(timeDiff, wordPos);
+        console.log((60/timeDiff), (60/timeDiff)*wordPos);
+        return Math.floor((60/timeDiff)*wordPos)
+    }
+
     /**
      * Checks individual characters and words status
      * Calls functions to modify styling
@@ -38,9 +48,14 @@ const Main: React.FC = () => {
      * @param e input event
      */
     const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (wordPos === 0 && charPos === 0 ) {
+            setStartTime(new Date().getTime())
+        }
+
+        setWpm(checkWpm())
+        
         // lil restart thing
         if (e.key === 'Enter') {
-            console.log(e.key)
             // Resets styling (red/green/blue backgrounds on characters)
             quote.words.forEach((word, word_i) => {
                 word.characters.forEach((character, char_i)=> {
@@ -104,7 +119,7 @@ const Main: React.FC = () => {
                     <div id="input-container">
                         <input onKeyDown={(e) => handleOnKeyDown(e)} />
                     </div>
-                    <p>Words Per Minute: {Math.floor(60/wordPos)}</p>
+                    <p>Words Per Minute: {wpm}</p>
                 </div>
             </div>
             <div className='right-column'>

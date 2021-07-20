@@ -16,7 +16,7 @@ class CharacterController extends Controller
     {
         $request->validate([
             'full_name' => 'required|string',
-            'source_id' => 'required',
+            'source_id' => 'required|integer',
         ]);
         
         return Character::create($request->all());
@@ -25,6 +25,19 @@ class CharacterController extends Controller
     public function show($id)
     {
         return Character::find($id);
+    }
+    
+    public function searchName($name)
+    {
+        $characters = Character::where('full_name', 'like', "%$name%")->all();
+
+        if (!$characters) {
+            return response([
+                'message' => 'Not Found.'
+            ]);
+        }
+        
+        return $characters;
     }
 
     public function update(Request $request, $id)

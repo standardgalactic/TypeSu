@@ -15,6 +15,11 @@ class CreateMediaTimingsTable extends Migration
     {
         Schema::create('media_timings', function (Blueprint $table) {
             $table->id();
+            $table->integer('line_id');
+            $table->integer('word_position');
+            $table->integer('char_position');
+            $table->integer('image_id');
+            $table->integer('sound_id')->nullable();
             $table->timestamps();
         });
     }

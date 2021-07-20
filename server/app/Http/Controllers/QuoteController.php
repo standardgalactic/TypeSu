@@ -15,9 +15,9 @@ class QuoteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required',
-            'source_id' => 'required',
-            'reference_in_source' => 'required',
+            'user_id' => 'required|integer',
+            'source_id' => 'required|integer',
+            'reference_in_source' => 'required|string',
         ]);
         
         return Quote::create($request->all());

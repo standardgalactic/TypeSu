@@ -15,9 +15,10 @@ class LineController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'character_id' => 'required|integer',
             'quote_id' => 'required|integer',
+            'character_id' => 'required|integer',
             'line' => 'required|string',
+            'verified' => 'required|boolean',
             'is_main' => 'required|boolean',
         ]);
         
@@ -27,6 +28,32 @@ class LineController extends Controller
     public function show($id)
     {
         return Line::find($id);
+    }
+    
+    public function showQuoteId($quote_id)
+    {
+        $line = Line::where('quote_id', $quote_id)->all();
+
+        if (!$line) {
+            return response([
+                'message' => 'Not Found.'
+            ]);
+        }
+        
+        return $line;
+    }
+    
+    public function showCharacterId($character_id)
+    {
+        $line = Line::where('character_id', $character_id)->all();
+
+        if (!$line) {
+            return response([
+                'message' => 'Not Found.'
+            ]);
+        }
+        
+        return $line;
     }
 
     public function update(Request $request, $id)

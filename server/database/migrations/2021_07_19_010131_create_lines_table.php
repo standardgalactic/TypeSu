@@ -15,6 +15,11 @@ class CreateLinesTable extends Migration
     {
         Schema::create('lines', function (Blueprint $table) {
             $table->id();
+            $table->integer('quote_id');
+            $table->integer('character_id');
+            $table->string('line');
+            $table->boolean('verified');
+            $table->boolean('is_main');
             $table->timestamps();
         });
     }

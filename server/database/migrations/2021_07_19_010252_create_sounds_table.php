@@ -15,6 +15,7 @@ class CreateSoundsTable extends Migration
     {
         Schema::create('sounds', function (Blueprint $table) {
             $table->id();
+            $table->string('vocaroo_url');
             $table->timestamps();
         });
     }
